@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 
-
 @main
 struct AlarmforReviewApp: App {
     var sharedModelContainer: ModelContainer = {
