@@ -1,0 +1,6 @@
+framework module Pods_AlarmforReview {
+  umbrella header "Pods-AlarmforReview-umbrella.h"
+
+  export *
+  module * { export * }
+}

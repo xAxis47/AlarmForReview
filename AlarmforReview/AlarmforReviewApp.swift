@@ -1,32 +1,47 @@
 //
-//  AlarmforReviewApp.swift
-//  AlarmforReview
+//  AlarmApp.swift
+//  Alarm
 //
-//  Created by Kawagoe Wataru on 2024/09/24.
+//  Created by Kawagoe Wataru on 2024/06/20.
 //
 
 import SwiftUI
 import SwiftData
 
+
 @main
+@MainActor
 struct AlarmforReviewApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-        .modelContainer(sharedModelContainer)
+    
+    let shared: AViewModel = AViewModel.shared
+    
+    init() {
+        
+        shared.registerAllNotifications()
+        
     }
+    
+    var body: some Scene {
+        
+        WindowGroup {
+            
+            AlarmView()
+                .environmentObject(AViewModel.shared)
+                .modelContainer(AViewModel.shared.sharedModelContainer)  
+            
+        }
+        //app refresh and register notification each 3 hours.
+        .backgroundTask(.appRefresh(Constant.refreshIdentifier)){
+            
+            await shared.scheduleAppRefresh()
+            await shared.registerAllNotifications()
+            
+        }
+        
+        
+    }
+    
 }
+
+
+//onAppearとbackgroundでのregisterNotificationを行う。
