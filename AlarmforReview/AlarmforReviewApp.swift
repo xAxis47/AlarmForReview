@@ -8,18 +8,13 @@
 import SwiftUI
 import SwiftData
 
-
 @main
 @MainActor
 struct AlarmforReviewApp: App {
     
-    let shared: AViewModel = AViewModel.shared
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    init() {
-        
-        shared.registerAllNotifications()
-        
-    }
+    let shared: AViewModel = AViewModel.shared
     
     var body: some Scene {
         
