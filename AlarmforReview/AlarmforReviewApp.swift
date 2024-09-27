@@ -1,6 +1,6 @@
 //
-//  AlarmApp.swift
-//  Alarm
+//  AlarmforReviewApp.swift
+//  AlarmforReview
 //
 //  Created by Kawagoe Wataru on 2024/06/20.
 //
