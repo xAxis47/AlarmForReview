@@ -10,7 +10,7 @@ import SwiftUI
 //show which day of the week the alarm will ring.
 struct RepititionCell: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     var body: some View {
         

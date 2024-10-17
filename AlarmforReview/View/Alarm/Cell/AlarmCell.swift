@@ -11,7 +11,7 @@ import SwiftUI
 //put cell of setted time on AlarmView. right toggle express to ring or not to ring.
 struct AlarmCell: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
 
@@ -32,8 +32,8 @@ struct AlarmCell: View {
         //when tap this button, transition to InputView on ".edit".
         Button(action: {
             
-            //itemIndex is for setting InputView.
-            self.vm.itemIndex = items.firstIndex(of: item) ?? 9999
+            //index is for setting InputView.
+            self.vm.indexUUID = item.uuid
             
             self.vm.type = .edit
             self.vm.sheetIsPresented = true
@@ -72,7 +72,7 @@ struct AlarmCell: View {
             .onChange(of: self.isOn) {
                
                 //when toggle is changed, register notification again.
-                self.vm.changeToggle(isOn: self.isOn)
+                self.vm.changeToggle(bool: self.isOn)
                
             }
                

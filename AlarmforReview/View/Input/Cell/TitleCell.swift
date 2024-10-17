@@ -10,7 +10,7 @@ import SwiftUI
 //Enter a title in this field and group by that title in AlarmView.
 struct TitleCell: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     var body: some View {
         

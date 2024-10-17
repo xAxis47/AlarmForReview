@@ -11,7 +11,7 @@ import SwiftUI
 //this button is for menu cell. if tap this button, TitleCell's TextField is filled this button's String.
 struct MenuButton: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     private let title: String
     

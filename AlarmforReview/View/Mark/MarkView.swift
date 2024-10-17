@@ -10,7 +10,7 @@ import SwiftUI
 //On MarkView, represent the days of the week and isOn or not. in this view, decide which days of the week the sound will be played. if tap orange icon, become off.
 struct MarkView: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     var body: some View {
         

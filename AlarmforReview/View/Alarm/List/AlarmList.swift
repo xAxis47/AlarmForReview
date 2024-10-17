@@ -11,7 +11,7 @@ import SwiftUI
 //this list has 2 section and position header top of the section.
 struct AlarmList: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
 
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
     

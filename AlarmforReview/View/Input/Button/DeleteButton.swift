@@ -10,7 +10,7 @@ import SwiftUI
 //this button call deleteAlert. cant delete anything.
 struct DeleteButton: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     var body: some View {
         

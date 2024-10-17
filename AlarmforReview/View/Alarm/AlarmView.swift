@@ -13,7 +13,7 @@ struct AlarmView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
     

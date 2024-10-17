@@ -10,7 +10,7 @@ import SwiftUI
 //this cell is used to set whether or not a sound will be played on that day of the week.
 struct MarkCell: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
 
     private let day: String
     private let index: Int

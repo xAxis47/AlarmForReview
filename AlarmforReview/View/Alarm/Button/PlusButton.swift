@@ -11,7 +11,7 @@ import SwiftUI
 //The PlusButton is placed in the top right of the screen. this button is for making alarm.
 struct PlusButton: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
 
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
 

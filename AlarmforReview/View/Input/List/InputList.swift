@@ -18,7 +18,7 @@ struct InputList: View {
             
             SettingSection()
             
-            DeleteSection()
+//            DeleteSection()
             
         }
         

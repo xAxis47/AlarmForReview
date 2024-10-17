@@ -10,7 +10,7 @@ import SwiftUI
 //StopButton for stopping sound of notification.
 struct StopButton: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
 
     var body: some View {
         

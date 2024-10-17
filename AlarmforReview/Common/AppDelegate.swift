@@ -10,9 +10,11 @@ import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
-    let shared: AViewModel = AViewModel.shared
+    let shared: AlarmViewModel = AlarmViewModel.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        print("appdelegate")
         
         shared.scheduleAppRefresh()
         shared.registerAllNotifications()

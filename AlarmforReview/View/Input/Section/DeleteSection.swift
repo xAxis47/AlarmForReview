@@ -10,7 +10,7 @@ import SwiftUI
 //when EditorialType is ".edit" this DeleteSection is shown.
 struct DeleteSection: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
 
     var body: some View {
         

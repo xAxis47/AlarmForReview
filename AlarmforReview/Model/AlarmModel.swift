@@ -1,8 +1,8 @@
 //
-//  BCAViewModel.swift
+//  AlarmModel.swift
 //  AlarmforReview
 //
-//  Created by Kawagoe Wataru on 2024/06/20.
+//  Created by Kawagoe Wataru on 2024/12/05.
 //
 
 import AVFoundation
@@ -11,157 +11,37 @@ import Foundation
 import SwiftData
 import SwiftDate
 import SwiftUI
+import UIKit
 import UserNotifications
 
 @MainActor
-class AViewModel: ObservableObject{
+class AlarmModel: ObservableObject {
     
-    static let shared: AViewModel = AViewModel()
-    
-    let center = UNUserNotificationCenter.current()
-    
-    var model: AModel = AModel()
-    
-    //"checkMarks" index is subscript, and Bool is showing icon or not.
-    var checkMarks: [Bool] {
-        get {
-            return self.model.checkMarks
-        }
-        set {
-            self.model.checkMarks = newValue
-        }
-    }
-    
-    //conflictAlert is in InputView, and this alert is called when this viewmodel's date same item's date.
-    var conflictAlertIsPresented: Bool {
-        get {
-            return self.model.conflictAlertIsPresented
-        }
-        set {
-            self.model.conflictAlertIsPresented = newValue
-        }
-    }
-    
-    //"date" is time of when is called alarm. using points are day, hour and minute. year and month isn't used.
-    var date: Date {
-        get {
-            return self.model.date
-        }
-        set {
-            self.model.date = newValue
-        }
-    }
-    
-    //deleteAlert is in InputView. this alert is shown when EditorialType is ".edit". DeleteButton is shown editing is second time onwards. at first show DeleteSection, DeleteCell and DeleteButton.
-    var deleteAlertIsPresented: Bool {
-        get {
-            return self.model.deleteAlertIsPresented
-        }
-        set {
-            self.model.deleteAlertIsPresented = newValue
-        }
-    }
-    
-    //"isOn" show whether shown each icon of MarkView or not. if showing icon, that day's alarm will be ring.
-    var isOn: Bool {
-        get {
-            return self.model.isOn
-        }
-        set {
-            self.model.isOn = newValue
-        }
-    }
-    
-    //"itemIndex" is subscript of HourAndMinute. after fetching items, assign "itemIndex" to items.
-    var itemIndex: Int {
-        get {
-            return self.model.itemIndex
-        }
-        set {
-            self.model.itemIndex = newValue
-        }
-    }
-    
-    //limit is ammount of items. items are over 16, there are restriction.
-    var limitAlertIsPresented: Bool {
-        get{
-            return self.model.limitAlertIsPresented
-        }
-        set {
-            self.model.limitAlertIsPresented = newValue
-        }
-    }
-    
-    //there is a sheet only one, InputView. this sheet is called from AlarmView.
-    var sheetIsPresented: Bool {
-        get {
-            return self.model.sheetIsPresented
-        }
-        set {
-            self.model.sheetIsPresented = newValue
-        }
-    }
-    
-    //"title" is for item's variable of showing title of AlarmView.
-    var title: String {
-        get {
-            return self.model.title
-        }
-        set {
-            self.model.title = newValue
-        }
-    }
-    
-    //this "uuid" is used when be called request and delete notification.
-    var uuid: UUID {
-        get {
-            return self.model.uuid
-        }
-        set {
-            self.model.uuid = newValue
-        }
-    }
-    
-    //zeroTrue alert is called when there is no icon at MarkView.  this situation is avoided because include risk on never ringing alarm
-    var zeroTrueAlertIsPresented: Bool {
-        get {
-            return self.model.zeroTrueAlertIsPresented
-        }
-        set {
-            self.model.zeroTrueAlertIsPresented = newValue
-        }
-    }
-    
-    //EditorialType include ".add", and ".edit". ".add" is creating new, and ".edit" is editing data again on InputView.
-    var type: EditorialType {
-        get {
-            return self.model.type
-        }
-        set {
-            self.model.type = newValue
-        }
-    }
-    
-    // at AlarmView and InputView, assign data to "item". item is HourAndMinute byself.
-    var item: HourAndMinute {
-        get {
-            return self.model.item
-        }
-        set {
-            self.model.item = newValue
-        }
-    }
-    
-    //ModelContainer is used at fetching data, adding, saving, editing and deleting.
-    var sharedModelContainer: ModelContainer {
-        get {
-            return self.model.sharedModelContainer
-        }
-    }
+    let center: UNUserNotificationCenter = UNUserNotificationCenter.current()
     
     //notificationDelegate is from UNUserNotificationCenterDelegate. userNotifcation include "willPresentnotification" and "didReceiveresponse". "willPresentnotification" is set [.list, .banner, .badge, .sound].
     let notificationDelegate = ForegroundNotificationDelegate()
+    
+    var sharedModelContainer: ModelContainer = {
+        
+        let schema = Schema([
+            HourAndMinute.self
+        ])
+        
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
+        do {
+            
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            
+        } catch {
+            
+            fatalError("Could not create ModelContainer: \(error)")
+            
+        }
+        
+    }()
+    
     init() {
         
         //this is request permission. if permitted, notificationDelegate assign self.center.delegate.
@@ -222,9 +102,9 @@ class AViewModel: ObservableObject{
     }
     
     //this fuction called at AlarmView. isOn is toggle of AlarmCell.
-    func changeToggle(isOn: Bool) {
+    func changeToggle(isOn: inout Bool, bool: Bool) {
         
-        self.isOn = isOn
+        isOn = bool
         
         do {
             
@@ -282,19 +162,12 @@ class AViewModel: ObservableObject{
         
     }
     
-    //simply call removeAllPendingNotificationRequests. only delete all registered notification.
-    func deleteAllNotification() {
-        
-        self.center.removeAllPendingNotificationRequests()
-        
-    }
-    
     //delete item on ViewModel. after that, for deleted item, register notifications again. this function is called at AlertButtons in InputView.
-    func deleteItem() {
+    func deleteItem(item: HourAndMinute) {
         
         let context = self.sharedModelContainer.mainContext
         
-        context.delete(self.item)
+        context.delete(item)
         
     }
     
@@ -323,6 +196,29 @@ class AViewModel: ObservableObject{
         let identifier = String(describing: item.uuid)
                 
         self.center.removePendingNotificationRequests(withIdentifiers: [identifier])
+        
+    }
+    
+    func fetchItem(uuid: UUID) -> HourAndMinute {
+        
+        let context = self.sharedModelContainer.mainContext
+        
+        do {
+            
+            let descriptor = FetchDescriptor<HourAndMinute>(
+                predicate: #Predicate { item in item.uuid ==  uuid },
+                sortBy: [SortDescriptor(\.date, order: .forward)]
+            )
+            
+            let items = try context.fetch(descriptor)
+            
+            return items.first ?? HourAndMinute()
+            
+        } catch {
+            
+            fatalError("\(error)")
+            
+        }
         
     }
     
@@ -465,9 +361,9 @@ class AViewModel: ObservableObject{
         
         let currentDate = Date()
           
-        let itemsToday = self.fetchItems()
+        let items = self.fetchItems()
         
-        itemsToday.forEach { item in
+        items.forEach { item in
             
             if(item.isOn) {
                 
@@ -490,9 +386,7 @@ class AViewModel: ObservableObject{
             
         }
       
-        let itemsNextDay = self.fetchItems()
-        
-        itemsNextDay.forEach { item in
+        items.forEach { item in
             
             if(item.isOn) {
                 
@@ -576,7 +470,7 @@ class AViewModel: ObservableObject{
     }
     
     //save editing item on InputView or creating new, or is called conflictAlert. "overlap" means items' dates' overlap. when overlap, cant save item. then call conflictAlert.
-    func saveItemOrCallAlert(dismiss: DismissAction) {
+    func saveItemOrCallAlert(conflictAlertIsPresented: inout Bool, dismiss: DismissAction, item: HourAndMinute, type: EditorialType) {
         
         let context = self.sharedModelContainer.mainContext
         
@@ -584,21 +478,24 @@ class AViewModel: ObservableObject{
         
        //when dates of items overlap, "overlap" not 0
         let overlap = items
-           .filter { $0.date == self.date }
+            .filter { $0.date == item.date }
            .count
+        
+        let updateItem = self.fetchItem(uuid: item.uuid)
        
         //EditorialType
-        let type = self.type
         
         //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "Constant.other".
-        if(type == .add && overlap == 0 && self.title == Constant.blank) {
+        if(type == .add && overlap == 0 && item.title == Constant.blank) {
+            
+            print("0")
             
             let newItem = HourAndMinute(
-                checkMarks: self.checkMarks,
-                date: self.date,
-                isOn: self.isOn,
+                checkMarks: item.checkMarks,
+                date: item.date,
+                isOn: item.isOn,
                 title: Constant.other,
-                uuid: self.uuid
+                uuid: item.uuid
             )
            
             context.insert(newItem)
@@ -606,14 +503,16 @@ class AViewModel: ObservableObject{
             dismiss()
          
             //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "self.title".
-        } else if(type == .add && overlap == 0 && self.title != Constant.blank) {
+        } else if(type == .add && overlap == 0 && item.title != Constant.blank) {
 
+            print("1")
+            
             let newItem = HourAndMinute(
-                checkMarks: self.checkMarks,
-                date: self.date,
-                isOn: self.isOn,
-                title: self.title,
-                uuid: self.uuid
+                checkMarks: item.checkMarks,
+                date: item.date,
+                isOn: item.isOn,
+                title: item.title,
+                uuid: item.uuid
             )
            
             context.insert(newItem)
@@ -623,20 +522,26 @@ class AViewModel: ObservableObject{
         //when ".add", and if overlap items, that conflict SwiftData.
         } else if(type == .add && overlap != 0) {
 
-            self.conflictAlertIsPresented = true
+            print("2")
+            
+            conflictAlertIsPresented = true
            
         //if variables of "HourAndMinute" dont change anything, simply dismiss.
-        } else if(type == .edit && self.item.checkMarks == self.checkMarks && self.item.date == self.date && self.item.title == self.title) {
+        } else if(type == .edit && updateItem.checkMarks == item.checkMarks && updateItem.date == item.date && updateItem.title == item.title) {
+            
+            print("3")
 
             dismiss()
 
         //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" was changed and "title" was inserted blank necessarily. item's title is inserted "Constant.other".
-        } else if(type == .edit && overlap == 0 && self.title == Constant.blank) {
+        } else if(type == .edit && overlap == 0 && item.title == Constant.blank) {
+            
+            print("4")
 
-            self.item.checkMarks = self.checkMarks
-            self.item.date = self.date
-            self.item.isOn = self.isOn
-            self.item.title = Constant.other
+            updateItem.checkMarks = item.checkMarks
+            updateItem.date = item.date
+            updateItem.isOn = item.isOn
+            updateItem.title = Constant.other
            
             do {
                
@@ -651,12 +556,14 @@ class AViewModel: ObservableObject{
             dismiss()
             
             //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" or "title" was changed necessarily. item's title is inserted "self.title".
-        } else if(type == .edit && overlap == 0 && self.title != Constant.blank) {
+        } else if(type == .edit && overlap == 0 && item.title != Constant.blank) {
+            
+            print("5")
 
-            self.item.checkMarks = self.checkMarks
-            self.item.date = self.date
-            self.item.isOn = self.isOn
-            self.item.title = self.title
+            updateItem.checkMarks = item.checkMarks
+            updateItem.date = item.date
+            updateItem.isOn = item.isOn
+            updateItem.title = item.title
            
             do {
                
@@ -671,12 +578,14 @@ class AViewModel: ObservableObject{
             dismiss()
          
         //when ".edit", and overlap items, dont change "date", "title" is inserted blank, need to save item. in this case, changed "checkMarks" and "title".
-        } else if(type == .edit && overlap != 0 && self.item.date == self.date && self.title == Constant.blank) {
+        } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title == Constant.blank) {
             
-            self.item.checkMarks = self.checkMarks
-            self.item.date = self.date
-            self.item.isOn = self.isOn
-            self.item.title = Constant.other
+            print("6")
+            
+            updateItem.checkMarks = item.checkMarks
+            updateItem.date = item.date
+            updateItem.isOn = item.isOn
+            updateItem.title = Constant.other
            
             do {
                
@@ -691,12 +600,14 @@ class AViewModel: ObservableObject{
             dismiss()
          
         //when ".edit", and overlap items, dont change "date", "title" isnt inserted blank, need to save item. in this case, changed "checkMarks" or "title".
-        } else if(type == .edit && overlap != 0 && self.item.date == self.date && self.title != Constant.blank) {
+        } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title != Constant.blank) {
             
-            self.item.checkMarks = self.checkMarks
-            self.item.date = self.date
-            self.item.isOn = self.isOn
-            self.item.title = self.title
+            print("7")
+            
+            updateItem.checkMarks = item.checkMarks
+            updateItem.date = item.date
+            updateItem.isOn = item.isOn
+            updateItem.title = item.title
            
             do {
                
@@ -712,6 +623,8 @@ class AViewModel: ObservableObject{
            
         //other case is conflict SwiftData. call conflictAlert.
         } else {
+            
+            print("8")
             
              conflictAlertIsPresented = true
             
@@ -729,6 +642,8 @@ class AViewModel: ObservableObject{
         let request = BGAppRefreshTaskRequest(identifier: Constant.refreshIdentifier)
         request.earliestBeginDate = next
         
+        print(request)
+        
         do {
             
             try BGTaskScheduler.shared.submit(request)
@@ -742,31 +657,35 @@ class AViewModel: ObservableObject{
     }
     
     //when call this function, setup this ViewModel's variables at new value or edited value.
-    func setUpInputView() {
+    func setUpInputView(checkMarks: inout [Bool], date: inout Date, indexUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
         
-        if(self.type == .add) {
+        print("setup")
+        
+        if(type == .add) {
             
-            self.checkMarks = Constant.trueArray
-            self.date = Constant.initialDate
-            self.isOn = true
-            self.title = ""
-            self.uuid = UUID()
+            print("add")
             
-            self.item = HourAndMinute()
+            checkMarks = Constant.trueArray
+            date = Constant.initialDate
+            isOn = true
+            title = ""
+            uuid = UUID()
+            
+//            self.item = HourAndMinute()
             
         } else {
             
-            let items = fetchItems()
-
-            let item = items[itemIndex]
+            print("edit")
             
-            self.checkMarks = item.checkMarks
-            self.date = item.date
-            self.isOn = item.isOn
-            self.title = item.title
-            self.uuid = item.uuid
+            let item = fetchItem(uuid: indexUUID)
             
-            self.item = item
+            checkMarks = item.checkMarks
+            date = item.date
+            isOn = item.isOn
+            title = item.title
+            uuid = item.uuid
+            
+//            self.item = item
             
         }
         

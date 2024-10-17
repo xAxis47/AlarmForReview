@@ -11,7 +11,7 @@ import SwiftUI
 //this section is complex a little.
 struct AlarmSection: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
 
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
 

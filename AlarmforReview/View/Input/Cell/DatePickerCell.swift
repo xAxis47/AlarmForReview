@@ -10,7 +10,9 @@ import SwiftUI
 //simply cell of the DatePicker
 struct DatePickerCell: View {
     
-    @EnvironmentObject private var vm: AViewModel
+    @State var date: Date = Date()
+    
+    @EnvironmentObject private var vm: AlarmViewModel
     
     var body: some View {
         

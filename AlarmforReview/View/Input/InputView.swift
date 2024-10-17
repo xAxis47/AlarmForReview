@@ -15,14 +15,16 @@ struct InputView: View {
     //when this environment variables is called, close sheet view
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject private var vm: AViewModel
+    @EnvironmentObject private var vm: AlarmViewModel
     
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
     
     init() {
         
+        print("init")
+        
         //when open this InputView, setup become to need. setup has two kind of the type. one type of EditorialType is ".add", other type of EditorialType is ".edit".
-        AViewModel.shared.setUpInputView()
+        AlarmViewModel.shared.setUpInputView()
         
     }
     
