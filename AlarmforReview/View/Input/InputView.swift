@@ -19,15 +19,6 @@ struct InputView: View {
     
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
     
-    init() {
-        
-        print("init")
-        
-        //when open this InputView, setup become to need. setup has two kind of the type. one type of EditorialType is ".add", other type of EditorialType is ".edit".
-        AlarmViewModel.shared.setUpInputView()
-        
-    }
-    
     var body: some View {
         
         NavigationStack {

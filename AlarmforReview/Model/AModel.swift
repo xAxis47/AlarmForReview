@@ -26,7 +26,7 @@ import SwiftData
     
     var type: EditorialType
 
-    var item: HourAndMinute
+    var item: Item
     
     var sharedModelContainer: ModelContainer = {
         
@@ -50,7 +50,8 @@ import SwiftData
     
     init() {
         
-        self.checkMarks = Constant.trueArray
+//        self.checkMarks = Constant.trueArray
+        self.checkMarks = []
         self.conflictAlertIsPresented = false
         self.date = Constant.initialDate
         self.deleteAlertIsPresented = false
@@ -64,7 +65,7 @@ import SwiftData
         
         self.type = .add
         
-        self.item = HourAndMinute()
+        self.item = Item()
         
     }
     

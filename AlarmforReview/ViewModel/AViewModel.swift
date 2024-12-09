@@ -143,7 +143,7 @@ class AViewModel: ObservableObject{
     }
     
     // at AlarmView and InputView, assign data to "item". item is HourAndMinute byself.
-    var item: HourAndMinute {
+    var item: Item {
         get {
             return self.model.item
         }
@@ -182,7 +182,7 @@ class AViewModel: ObservableObject{
     }
     
     //2 notification are added. first is ringing notification and second notification is silence. after request notification, identifier add suffix and count. timeInterval need over 0.
-    func addNotification(count: Int, currentDate: Date, item: HourAndMinute) {
+    func addNotification(count: Int, currentDate: Date, item: Item) {
 
         let timeInterval = getDateDifference(
             count: count,
@@ -327,13 +327,13 @@ class AViewModel: ObservableObject{
     }
     
     //bring all of HourAndMinute sorted by Date and asending.
-    func fetchItems() -> [HourAndMinute] {
+    func fetchItems() -> [Item] {
         
         let context = self.sharedModelContainer.mainContext
         
         do {
             
-            let descriptor = FetchDescriptor<HourAndMinute>(
+            let descriptor = FetchDescriptor<Item>(
                 sortBy: [SortDescriptor(\.date, order: .forward)]
             )
             
@@ -350,7 +350,7 @@ class AViewModel: ObservableObject{
     }
     
     //get the difference between today's or tomorrow's date and the item's date. item's date is 1970/01/01.
-    func getDateDifference(count: Int, currentDate: Date, item: HourAndMinute) -> TimeInterval {
+    func getDateDifference(count: Int, currentDate: Date, item: Item) -> TimeInterval {
         
         let targetDate = DateInRegion(
             components: {
@@ -593,7 +593,7 @@ class AViewModel: ObservableObject{
         //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "Constant.other".
         if(type == .add && overlap == 0 && self.title == Constant.blank) {
             
-            let newItem = HourAndMinute(
+            let newItem = Item(
                 checkMarks: self.checkMarks,
                 date: self.date,
                 isOn: self.isOn,
@@ -608,7 +608,7 @@ class AViewModel: ObservableObject{
             //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "self.title".
         } else if(type == .add && overlap == 0 && self.title != Constant.blank) {
 
-            let newItem = HourAndMinute(
+            let newItem = Item(
                 checkMarks: self.checkMarks,
                 date: self.date,
                 isOn: self.isOn,
@@ -746,13 +746,13 @@ class AViewModel: ObservableObject{
         
         if(self.type == .add) {
             
-            self.checkMarks = Constant.trueArray
+            self.checkMarks = []
             self.date = Constant.initialDate
             self.isOn = true
             self.title = ""
             self.uuid = UUID()
             
-            self.item = HourAndMinute()
+            self.item = Item()
             
         } else {
             

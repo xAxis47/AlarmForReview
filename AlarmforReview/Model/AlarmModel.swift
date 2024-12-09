@@ -124,7 +124,7 @@ class AlarmModel: ObservableObject {
     }
     
     //"checkMarks[index]" is express on or off of the days of the week. if not isToday is next day. index is assigned from temporary.
-    func checkDailyCondition(checkMarks: [Bool], isToday: Bool) -> Bool {
+    func checkDailyCondition(checkMarks: [CheckMark], isToday: Bool) -> CheckMark {
       
         //weekday return 1 ~ 7. 1 is Sunday and 7 is Saturday.
         let weekday = Date().weekday
@@ -267,9 +267,9 @@ class AlarmModel: ObservableObject {
     }
     
     //write string of the days of the week or "everyday".
-    func pickUpDaysString(checkMarks: [Bool]) -> String {
+    func pickUpDaysString(checkMarks: [CheckMark]) -> String {
         
-        let trueCount = checkMarks.filter { $0 }
+        let trueCount = checkMarks.filter { $0.bool }
 
         if(trueCount.count == 7) {
             
@@ -277,11 +277,11 @@ class AlarmModel: ObservableObject {
             
         } else {
             
-            let days = checkMarks.enumerated().map { bool in
+            let days = checkMarks.enumerated().map { checkMark in
                 
-                if(bool.element) {
+                if(checkMark.element.bool) {
                     
-                    return Constant.dayInitialsArray[bool.offset]
+                    return Constant.dayInitialsArray[checkMark.offset]
                     
                 } else {
                     
@@ -354,8 +354,6 @@ class AlarmModel: ObservableObject {
     //this function is most important of this App. at first remove registered notification, bring and assign items to itemsToday or itemsNextDay. after that check conditions(isOn and through checkMarks), carry out function.
     func registerAllNotifications() {
         
-        print("registered")
-        
         self.center.removeAllPendingNotificationRequests()
         self.center.removeAllDeliveredNotifications()
         
@@ -372,7 +370,7 @@ class AlarmModel: ObservableObject {
                     isToday: true
                 )
                 
-                if(condition) {
+                if(condition.bool) {
                     
                     self.addNotification(
                         count: Constant.today,
@@ -395,7 +393,7 @@ class AlarmModel: ObservableObject {
                     isToday: false
                 )
                 
-                if(condition) {
+                if(condition.bool) {
                     
                     self.addNotification(
                         count: Constant.nextDay,
@@ -470,7 +468,7 @@ class AlarmModel: ObservableObject {
     }
     
     //save editing item on InputView or creating new, or is called conflictAlert. "overlap" means items' dates' overlap. when overlap, cant save item. then call conflictAlert.
-    func saveItemOrCallAlert(conflictAlertIsPresented: inout Bool, dismiss: DismissAction, item: HourAndMinute, type: EditorialType) {
+    func saveItemOrCallAlert(conflictAlertIsPresented: inout Bool, dismiss: DismissAction, indexUUID: UUID, item: HourAndMinute, type: EditorialType) {
         
         let context = self.sharedModelContainer.mainContext
         
@@ -481,8 +479,8 @@ class AlarmModel: ObservableObject {
             .filter { $0.date == item.date }
            .count
         
-        let updateItem = self.fetchItem(uuid: item.uuid)
-       
+        let updateItem = self.fetchItem(uuid: indexUUID)
+        
         //EditorialType
         
         //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "Constant.other".
@@ -629,7 +627,7 @@ class AlarmModel: ObservableObject {
              conflictAlertIsPresented = true
             
         }
-       
+        
     }
     
     //this schedule is background task schedule. in this app, use AppRefresh. this time every 3 hours.
@@ -657,9 +655,10 @@ class AlarmModel: ObservableObject {
     }
     
     //when call this function, setup this ViewModel's variables at new value or edited value.
-    func setUpInputView(checkMarks: inout [Bool], date: inout Date, indexUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
+    func setUpInputView(checkMarks: inout [CheckMark], date: inout Date, indexOfHourAndMinuteUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
         
         print("setup")
+        print(type)
         
         if(type == .add) {
             
@@ -671,13 +670,15 @@ class AlarmModel: ObservableObject {
             title = ""
             uuid = UUID()
             
+            indexOfHourAndMinuteUUID = uuid
+            
 //            self.item = HourAndMinute()
             
         } else {
             
             print("edit")
             
-            let item = fetchItem(uuid: indexUUID)
+            let item = fetchItem(uuid: indexOfHourAndMinuteUUID)
             
             checkMarks = item.checkMarks
             date = item.date

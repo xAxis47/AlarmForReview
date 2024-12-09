@@ -11,6 +11,7 @@ import SwiftUI
 struct DeleteButton: View {
     
     @EnvironmentObject private var vm: AlarmViewModel
+//    @Environment(AlarmViewModel.self) var vm
     
     var body: some View {
         

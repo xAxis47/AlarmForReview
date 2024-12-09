@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class HourAndMinute {
     
-    var checkMarks: [Bool] = Constant.trueArray
+    var checkMarks: [CheckMark] = Constant.trueArray
     @Attribute(.unique) var date: Date = Constant.initialDate
     var isOn: Bool = true
     var title: String = Constant.goodMorning
@@ -20,6 +20,43 @@ final class HourAndMinute {
     init() {
         
         self.checkMarks = Constant.trueArray
+        self.date = Constant.initialDate
+        self.isOn = true
+        self.title = Constant.blank
+        self.uuid = UUID()
+        
+    }
+    
+    init(checkMarks: [CheckMark], date: Date, isOn: Bool, title: String, uuid: UUID) {
+        
+        self.checkMarks = checkMarks
+        self.date = date
+        self.isOn = isOn
+        self.title = title
+        self.uuid = uuid
+        
+    }
+    
+}
+
+struct CheckMark: Codable, Equatable {
+    
+    var bool: Bool
+    
+}
+
+@Model
+final class Item {
+    
+    var checkMarks: [Bool] = []
+    @Attribute(.unique) var date: Date = Constant.initialDate
+    var isOn: Bool = true
+    var title: String = Constant.goodMorning
+    @Attribute(.unique) var uuid: UUID = UUID()
+    
+    init() {
+        
+        self.checkMarks = []
         self.date = Constant.initialDate
         self.isOn = true
         self.title = Constant.blank

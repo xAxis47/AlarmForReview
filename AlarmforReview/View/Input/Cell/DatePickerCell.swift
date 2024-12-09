@@ -13,6 +13,7 @@ struct DatePickerCell: View {
     @State var date: Date = Date()
     
     @EnvironmentObject private var vm: AlarmViewModel
+//    @Environment(AlarmViewModel.self) var vm
     
     var body: some View {
         
@@ -21,7 +22,7 @@ struct DatePickerCell: View {
             selection: self.$vm.date,
             displayedComponents: .hourAndMinute
         ) {
-            
+
             Text(Constant.blank)
             
         }

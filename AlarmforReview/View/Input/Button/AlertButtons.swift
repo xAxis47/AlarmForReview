@@ -13,6 +13,7 @@ struct AlertButtons: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject private var vm: AlarmViewModel
+//    @Environment(AlarmViewModel.self) var vm
 
     var body: some View {
         

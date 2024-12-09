@@ -15,30 +15,23 @@ struct AlarmforReviewApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    let shared: AlarmViewModel = AlarmViewModel.shared
-    
-    init() {
-        
-        print("alarm for review")
-        
-    }
+//    let shared: AlarmViewModel = AlarmViewModel.shared
+    let vm: AlarmViewModel = AlarmViewModel()
     
     var body: some Scene {
         
         WindowGroup {
             
             AlarmView()
-                .environmentObject(self.shared)
-                .modelContainer(AlarmViewModel.shared.sharedModelContainer)
+                .environmentObject(self.vm)
+                .modelContainer(self.vm.sharedModelContainer)
             
         }
         //app refresh and register notification each 3 hours.
         .backgroundTask(.appRefresh(Constant.refreshIdentifier)){
             
-            print("background")
-            
-            await shared.scheduleAppRefresh()
-            await shared.registerAllNotifications()
+            await self.vm.scheduleAppRefresh()
+            await self.vm.registerAllNotifications()
             
         }
         

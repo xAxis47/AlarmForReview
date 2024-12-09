@@ -53,9 +53,10 @@ struct Constant {
     static let multipleComma: String = ",,"
     
     
-    static let falseArray: [Bool] = [false, false, false, false, false, false, false]
-    static let trueArray: [Bool] = [true, true, true, true, true, true, true]
-    
+    static let checkMarkFalse: CheckMark = CheckMark(bool: false)
+    static let checkMarkTrue: CheckMark = CheckMark(bool: true)
+    static let falseArray: [CheckMark] = [checkMarkFalse, checkMarkFalse, checkMarkFalse, checkMarkFalse, checkMarkFalse, checkMarkFalse, checkMarkFalse]
+    static let trueArray: [CheckMark] = [checkMarkTrue, checkMarkTrue, checkMarkTrue, checkMarkTrue, checkMarkTrue, checkMarkTrue, checkMarkTrue]
     
     static let dayArray: [String] = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"]
     static let dayInitialsArray: [String] = ["日", "月", "火", "水", "木", "金", "土"]

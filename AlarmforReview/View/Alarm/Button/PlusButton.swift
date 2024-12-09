@@ -12,6 +12,7 @@ import SwiftUI
 struct PlusButton: View {
     
     @EnvironmentObject private var vm: AlarmViewModel
+//    @Environment(AlarmViewModel.self) var vm
 
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
 
@@ -27,6 +28,7 @@ struct PlusButton: View {
             } else {
                 
                 self.vm.type = .add
+                self.vm.setUpInputView()
                 self.vm.sheetIsPresented = true
                 
             }

@@ -27,9 +27,9 @@ struct MarkCell: View {
         Button(action: {
             
             //decide ringing sound or not here.
-            self.vm.checkMarks[index].toggle()
+            self.vm.checkMarks[index].bool.toggle()
             
-            let trueCount = self.vm.checkMarks.filter {$0}
+            let trueCount = self.vm.checkMarks.filter {$0.bool}
                 .count
             
             //this alert is called when there are no icons.
@@ -38,7 +38,7 @@ struct MarkCell: View {
                 self.vm.zeroTrueAlertIsPresented = true
                 
                 //the number of icons cant remain at 0, so display the icons again here.
-                self.vm.checkMarks[index].toggle()
+                self.vm.checkMarks[index].bool.toggle()
                 
             }
             
@@ -50,7 +50,7 @@ struct MarkCell: View {
                 
                 Spacer()
                 
-                if(self.vm.checkMarks[index] == true) {
+                if(self.vm.checkMarks[index].bool == true) {
                     
                     Image(systemName: "alarm")
                         .foregroundStyle(.orange)

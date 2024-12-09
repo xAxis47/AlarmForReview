@@ -12,6 +12,7 @@ import SwiftUI
 struct MenuButton: View {
     
     @EnvironmentObject private var vm: AlarmViewModel
+//    @Environment(AlarmViewModel.self) var vm
     
     private let title: String
     

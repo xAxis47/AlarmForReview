@@ -16,7 +16,7 @@ import UserNotifications
 
 @MainActor
 @Observable
-final class AlarmViewModel {
+final class AlarmViewModel: ObservableObject {
     
     static let shared: AlarmViewModel = AlarmViewModel()
     
@@ -24,16 +24,18 @@ final class AlarmViewModel {
     
     let sharedModelContainer: ModelContainer
     
-    var checkMarks: [Bool] = Constant.trueArray
-    var conflictAlertIsPresented: Bool = false
+    var checkMarks: [CheckMark] = Constant.trueArray
     var date: Date = Constant.initialDate
-    var deleteAlertIsPresented: Bool = false
     var isOn: Bool = true
-    var indexUUID: UUID = UUID()
-    var limitAlertIsPresented: Bool = false
-    var sheetIsPresented: Bool = false
     var title: String = ""
     var uuid: UUID = UUID()
+    
+    var indexOfHourAndMinuteUUID: UUID = UUID()
+    
+    var conflictAlertIsPresented: Bool = false
+    var deleteAlertIsPresented: Bool = false
+    var limitAlertIsPresented: Bool = false
+    var sheetIsPresented: Bool = false
     var zeroTrueAlertIsPresented: Bool = false
     
     var type: EditorialType = .add
@@ -54,7 +56,7 @@ final class AlarmViewModel {
     
     func deleteItem() {
         
-        let item = model.fetchItem(uuid: indexUUID)
+        let item = model.fetchItem(uuid: indexOfHourAndMinuteUUID)
         
         model.deleteItem(item: item)
         
@@ -63,10 +65,11 @@ final class AlarmViewModel {
     func deleteItems(indexSet: IndexSet) {
         
         model.deleteItems(offsets: indexSet)
+        model.registerAllNotifications()
         
     }
     
-    func pickUpDaysString(checkMarks: [Bool]) -> String {
+    func pickUpDaysString(checkMarks: [CheckMark]) -> String {
         
         return model.pickUpDaysString(checkMarks: checkMarks)
         
@@ -100,16 +103,17 @@ final class AlarmViewModel {
             title: self.title,
             uuid: self.uuid
         )
-        
-        print("checkMark is \(self.checkMarks)")
-        print("date is \(self.date)")
-        print("isOn is \(self.isOn)")
-        print("title is \(self.title)")
-        print("uuid is \(self.uuid)")
-        
+//        
+//        print("checkMark is \(self.checkMarks)")
+//        print("date is \(self.date)")
+//        print("isOn is \(self.isOn)")
+//        print("title is \(self.title)")
+//        print("uuid is \(self.uuid)")
+//        
         model.saveItemOrCallAlert(
             conflictAlertIsPresented: &conflictAlertIsPresented,
             dismiss: dismiss,
+            indexUUID: self.indexOfHourAndMinuteUUID,
             item: item,
             type: self.type
         )
@@ -124,15 +128,16 @@ final class AlarmViewModel {
     
     func setUpInputView() {
         
+        print("type is \(self.type)")
+        
         model.setUpInputView(
             checkMarks: &self.checkMarks,
             date: &self.date,
-            indexUUID: &self.indexUUID,
+            indexOfHourAndMinuteUUID: &self.indexOfHourAndMinuteUUID,
             isOn: &self.isOn,
             title: &self.title,
-            type: self.type,
+            type: type,
             uuid: &self.uuid
-        
         )
         
     }
