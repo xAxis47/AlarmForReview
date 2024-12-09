@@ -15,7 +15,7 @@ import SwiftUI
 import UserNotifications
 
 @MainActor
-@Observable final class AlarmViewModel: ObservableObject {
+final class AlarmViewModel: ObservableObject {
     
     static let shared: AlarmViewModel = AlarmViewModel()
     
@@ -23,17 +23,17 @@ import UserNotifications
     
     let sharedModelContainer: ModelContainer
     
-    var checkMarks: [Bool] = Constant.trueArray
-    var conflictAlertIsPresented: Bool = false
-    var date: Date = Constant.initialDate
-    var deleteAlertIsPresented: Bool = false
-    var isOn: Bool = true
-    var indexUUID: UUID = UUID()
-    var limitAlertIsPresented: Bool = false
-    var sheetIsPresented: Bool = false
-    var title: String = ""
-    var uuid: UUID = UUID()
-    var zeroTrueAlertIsPresented: Bool = false
+    @Published var checkMarks: [Bool] = Constant.trueArray
+    @Published var conflictAlertIsPresented: Bool = false
+    @Published var date: Date = Constant.initialDate
+    @Published var deleteAlertIsPresented: Bool = false
+    @Published var isOn: Bool = true
+    @Published var indexUUID: UUID = UUID()
+    @Published var limitAlertIsPresented: Bool = false
+    @Published var sheetIsPresented: Bool = false
+    @Published var title: String = ""
+    @Published var uuid: UUID = UUID()
+    @Published var zeroTrueAlertIsPresented: Bool = false
     
     var type: EditorialType = .add
 
