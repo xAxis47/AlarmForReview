@@ -640,8 +640,6 @@ class AlarmModel: ObservableObject {
         let request = BGAppRefreshTaskRequest(identifier: Constant.refreshIdentifier)
         request.earliestBeginDate = next
         
-        print(request)
-        
         do {
             
             try BGTaskScheduler.shared.submit(request)
@@ -656,9 +654,6 @@ class AlarmModel: ObservableObject {
     
     //when call this function, setup this ViewModel's variables at new value or edited value.
     func setUpInputView(checkMarks: inout [CheckMark], date: inout Date, indexOfHourAndMinuteUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
-        
-        print("setup")
-        print(type)
         
         if(type == .add) {
             

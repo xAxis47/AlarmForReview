@@ -103,13 +103,7 @@ final class AlarmViewModel: ObservableObject {
             title: self.title,
             uuid: self.uuid
         )
-//        
-//        print("checkMark is \(self.checkMarks)")
-//        print("date is \(self.date)")
-//        print("isOn is \(self.isOn)")
-//        print("title is \(self.title)")
-//        print("uuid is \(self.uuid)")
-//        
+        
         model.saveItemOrCallAlert(
             conflictAlertIsPresented: &conflictAlertIsPresented,
             dismiss: dismiss,
@@ -127,8 +121,6 @@ final class AlarmViewModel: ObservableObject {
     }
     
     func setUpInputView() {
-        
-        print("type is \(self.type)")
         
         model.setUpInputView(
             checkMarks: &self.checkMarks,

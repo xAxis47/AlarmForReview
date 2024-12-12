@@ -458,8 +458,6 @@ class AViewModel: ObservableObject{
     //this function is most important of this App. at first remove registered notification, bring and assign items to itemsToday or itemsNextDay. after that check conditions(isOn and through checkMarks), carry out function.
     func registerAllNotifications() {
         
-        print("registered")
-        
         self.center.removeAllPendingNotificationRequests()
         self.center.removeAllDeliveredNotifications()
         
