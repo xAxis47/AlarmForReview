@@ -40,7 +40,7 @@ final class AlarmViewModel: ObservableObject {
     
     var type: EditorialType = .add
 
-//    var item: HourAndMinute = HourAndMinute()
+//    @Query(sort: [SortDescriptor(\HourAndMinute.date)]) var items: [HourAndMinute]
     
     init() {
         
@@ -120,17 +120,51 @@ final class AlarmViewModel: ObservableObject {
         
     }
     
+    //when call this function, setup this ViewModel's variables at new value or edited value.
     func setUpInputView() {
         
-        model.setUpInputView(
-            checkMarks: &self.checkMarks,
-            date: &self.date,
-            indexOfUUID: &self.indexOfUUID,
-            isOn: &self.isOn,
-            title: &self.title,
-            type: type,
-            uuid: &self.uuid
-        )
+        if(type == .add) {
+            
+            print("add")
+            
+            checkMarks = Constant.trueArray
+            date = Constant.initialDate
+            isOn = true
+            title = ""
+            uuid = UUID()
+            
+            indexOfUUID = uuid
+            
+        } else {
+            
+            print("edit")
+            
+            let item = model.fetchItem(uuid: indexOfUUID)
+            
+            checkMarks = item.checkMarks
+            date = item.date
+            isOn = item.isOn
+            title = item.title
+            uuid = item.uuid
+            
+        }
+        
+    }
+    
+    //when alarm is over 16 items, alert is called and stop adding alarm. otherwise can transition to InputView.
+    func tapPlusButton(items: [HourAndMinute]) {
+        
+        if(items.count > 16) {
+            
+            limitAlertIsPresented = true
+            
+        } else {
+            
+            type = .add
+            setUpInputView()
+            sheetIsPresented = true
+            
+        }
         
     }
     

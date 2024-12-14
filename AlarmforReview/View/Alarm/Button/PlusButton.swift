@@ -20,18 +20,7 @@ struct PlusButton: View {
         
         Button(action: {
             
-            //when alarm is over 16 items, alert is called and stop adding alarm. otherwise can transition to InputView.
-            if(items.count > 16) {
-                
-                self.vm.limitAlertIsPresented = true
-                
-            } else {
-                
-                self.vm.type = .add
-                self.vm.setUpInputView()
-                self.vm.sheetIsPresented = true
-                
-            }
+            vm.tapPlusButton(items: items)
             
         }) {
             

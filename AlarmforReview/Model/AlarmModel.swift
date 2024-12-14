@@ -651,40 +651,40 @@ class AlarmModel: ObservableObject {
         }
         
     }
-    
-    //when call this function, setup this ViewModel's variables at new value or edited value.
-    func setUpInputView(checkMarks: inout [CheckMark], date: inout Date, indexOfUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
-        
-        if(type == .add) {
-            
-            print("add")
-            
-            checkMarks = Constant.trueArray
-            date = Constant.initialDate
-            isOn = true
-            title = ""
-            uuid = UUID()
-            
-            indexOfUUID = uuid
-            
-//            self.item = HourAndMinute()
-            
-        } else {
-            
-            print("edit")
-            
-            let item = fetchItem(uuid: indexOfUUID)
-            
-            checkMarks = item.checkMarks
-            date = item.date
-            isOn = item.isOn
-            title = item.title
-            uuid = item.uuid
-            
-//            self.item = item
-            
-        }
-        
-    }
-    
+//    
+//    //when call this function, setup this ViewModel's variables at new value or edited value.
+//    func setUpInputView(checkMarks: inout [CheckMark], date: inout Date, indexOfUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
+//        
+//        if(type == .add) {
+//            
+//            print("add")
+//            
+//            checkMarks = Constant.trueArray
+//            date = Constant.initialDate
+//            isOn = true
+//            title = ""
+//            uuid = UUID()
+//            
+//            indexOfUUID = uuid
+//            
+////            self.item = HourAndMinute()
+//            
+//        } else {
+//            
+//            print("edit")
+//            
+//            let item = fetchItem(uuid: indexOfUUID)
+//            
+//            checkMarks = item.checkMarks
+//            date = item.date
+//            isOn = item.isOn
+//            title = item.title
+//            uuid = item.uuid
+//            
+////            self.item = item
+//            
+//        }
+//        
+//    }
+//    
 }
