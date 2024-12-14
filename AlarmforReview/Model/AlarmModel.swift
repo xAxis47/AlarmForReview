@@ -653,7 +653,7 @@ class AlarmModel: ObservableObject {
     }
     
     //when call this function, setup this ViewModel's variables at new value or edited value.
-    func setUpInputView(checkMarks: inout [CheckMark], date: inout Date, indexOfHourAndMinuteUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
+    func setUpInputView(checkMarks: inout [CheckMark], date: inout Date, indexOfUUID: inout UUID, isOn: inout Bool, title: inout String, type: EditorialType, uuid: inout UUID ) {
         
         if(type == .add) {
             
@@ -665,7 +665,7 @@ class AlarmModel: ObservableObject {
             title = ""
             uuid = UUID()
             
-            indexOfHourAndMinuteUUID = uuid
+            indexOfUUID = uuid
             
 //            self.item = HourAndMinute()
             
@@ -673,7 +673,7 @@ class AlarmModel: ObservableObject {
             
             print("edit")
             
-            let item = fetchItem(uuid: indexOfHourAndMinuteUUID)
+            let item = fetchItem(uuid: indexOfUUID)
             
             checkMarks = item.checkMarks
             date = item.date

@@ -30,7 +30,7 @@ final class AlarmViewModel: ObservableObject {
     var title: String = ""
     var uuid: UUID = UUID()
     
-    var indexOfHourAndMinuteUUID: UUID = UUID()
+    var indexOfUUID: UUID = UUID()
     
     var conflictAlertIsPresented: Bool = false
     var deleteAlertIsPresented: Bool = false
@@ -56,7 +56,7 @@ final class AlarmViewModel: ObservableObject {
     
     func deleteItem() {
         
-        let item = model.fetchItem(uuid: indexOfHourAndMinuteUUID)
+        let item = model.fetchItem(uuid: indexOfUUID)
         
         model.deleteItem(item: item)
         
@@ -107,7 +107,7 @@ final class AlarmViewModel: ObservableObject {
         model.saveItemOrCallAlert(
             conflictAlertIsPresented: &conflictAlertIsPresented,
             dismiss: dismiss,
-            indexUUID: self.indexOfHourAndMinuteUUID,
+            indexUUID: self.indexOfUUID,
             item: item,
             type: self.type
         )
@@ -125,7 +125,7 @@ final class AlarmViewModel: ObservableObject {
         model.setUpInputView(
             checkMarks: &self.checkMarks,
             date: &self.date,
-            indexOfHourAndMinuteUUID: &self.indexOfHourAndMinuteUUID,
+            indexOfUUID: &self.indexOfUUID,
             isOn: &self.isOn,
             title: &self.title,
             type: type,

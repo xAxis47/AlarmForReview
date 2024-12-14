@@ -34,7 +34,7 @@ struct AlarmCell: View {
         Button(action: {
             
             //index is for setting InputView.
-            self.vm.indexOfHourAndMinuteUUID = item.uuid
+            self.vm.indexOfUUID = item.uuid
             
             self.vm.type = .edit
             self.vm.setUpInputView()
