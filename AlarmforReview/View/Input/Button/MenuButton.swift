@@ -26,7 +26,7 @@ struct MenuButton: View {
         
         Button(action: {
             
-            self.vm.title = title
+            self.vm.tapMenuButton()
             
         }) {
             

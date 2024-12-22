@@ -33,13 +33,8 @@ struct AlarmCell: View {
         //when tap this button, transition to InputView on ".edit".
         Button(action: {
             
-            //index is for setting InputView.
-            self.vm.indexOfUUID = item.uuid
+            self.vm.tapAlarmCell(item: item)
             
-            self.vm.type = .edit
-            self.vm.setUpInputView()
-            self.vm.sheetIsPresented = true
-
         }) {
 
             Toggle(isOn: $isOn) {

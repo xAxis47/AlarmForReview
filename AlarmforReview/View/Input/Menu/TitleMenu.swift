@@ -11,6 +11,8 @@ import SwiftUI
 //when tap the button of title menu, TextField is filled that title.
 struct TitleMenu: View {
     
+    @EnvironmentObject private var vm: AlarmViewModel
+    
     @Query(sort: [SortDescriptor(\HourAndMinute.date)]) private var items: [HourAndMinute]
     
     var body: some View {
@@ -18,10 +20,7 @@ struct TitleMenu: View {
         Menu(content: {
             
             //After extracting the titles of the items, sort them in ascending order. exclude goodMorning and blank title.
-            let titles = Array(Set(items.map({ $0.title })))
-                .sorted(by: { $0 < $1 })
-                .filter { $0 != Constant.goodMorning }
-                .filter { $0 != Constant.blank }
+            let titles = self.vm.filterTitles(items: items)
             
             HStack {
                 

@@ -20,7 +20,7 @@ struct PlusButton: View {
         
         Button(action: {
             
-            vm.tapPlusButton(items: items)
+            self.vm.tapPlusButton(items: items)
             
         }) {
             

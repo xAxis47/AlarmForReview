@@ -16,9 +16,9 @@ struct DeleteButton: View {
     var body: some View {
         
         Button(action: {
-            
-            self.vm.deleteAlertIsPresented = true
-            
+
+            self.vm.tapDeleteButton()
+
         }) {
             
             HStack {

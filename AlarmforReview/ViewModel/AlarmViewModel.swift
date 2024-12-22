@@ -50,7 +50,7 @@ final class AlarmViewModel: ObservableObject {
     
     func changeToggle(bool: Bool) {
         
-        model.changeToggle(isOn: &isOn, bool: bool)
+        self.model.changeToggle(isOn: &isOn, bool: bool)
         
     }
     
@@ -58,39 +58,48 @@ final class AlarmViewModel: ObservableObject {
         
         let item = model.fetchItem(uuid: indexOfUUID)
         
-        model.deleteItem(item: item)
+        self.model.deleteItem(item: item)
         
     }
     
     func deleteItems(indexSet: IndexSet) {
         
-        model.deleteItems(offsets: indexSet)
-        model.registerAllNotifications()
+        self.model.deleteItems(offsets: indexSet)
+        self.model.registerAllNotifications()
+        
+    }
+    
+    func filterTitles(items: [HourAndMinute]) -> [String] {
+        
+        return Array(Set(items.map({ $0.title })))
+            .sorted(by: { $0 < $1 })
+            .filter { $0 != Constant.goodMorning }
+            .filter { $0 != Constant.blank }
         
     }
     
     func pickUpDaysString(checkMarks: [CheckMark]) -> String {
         
-        return model.pickUpDaysString(checkMarks: checkMarks)
+        return self.model.pickUpDaysString(checkMarks: checkMarks)
         
     }
     
     func pickUpHourAndMinuteString(date: Date) -> String {
         
-        return model.pickUpHourAndMinuteString(date: date)
+        return self.model.pickUpHourAndMinuteString(date: date)
         
     }
     
     //items need?
     func prepareList(items: [HourAndMinute]) -> [String] {
         
-        return model.prepareList(items: items)
+        return self.model.prepareList(items: items)
         
     }
     
     func registerAllNotifications() {
      
-        model.registerAllNotifications()
+        self.model.registerAllNotifications()
         
     }
     
@@ -104,7 +113,7 @@ final class AlarmViewModel: ObservableObject {
             uuid: self.uuid
         )
         
-        model.saveItemOrCallAlert(
+        self.model.saveItemOrCallAlert(
             conflictAlertIsPresented: &conflictAlertIsPresented,
             dismiss: dismiss,
             indexUUID: self.indexOfUUID,
@@ -116,38 +125,61 @@ final class AlarmViewModel: ObservableObject {
     
     func scheduleAppRefresh() {
         
-        model.scheduleAppRefresh()
+        self.model.scheduleAppRefresh()
         
     }
     
     //when call this function, setup this ViewModel's variables at new value or edited value.
     func setUpInputView() {
         
-        if(type == .add) {
+        if(self.type == .add) {
             
             print("add")
             
-            checkMarks = Constant.trueArray
-            date = Constant.initialDate
-            isOn = true
-            title = ""
-            uuid = UUID()
+            self.checkMarks = Constant.trueArray
+            self.date = Constant.initialDate
+            self.isOn = true
+            self.title = ""
+            self.uuid = UUID()
             
-            indexOfUUID = uuid
+            self.indexOfUUID = uuid
             
         } else {
             
             print("edit")
             
-            let item = model.fetchItem(uuid: indexOfUUID)
+            let item = self.model.fetchItem(uuid: indexOfUUID)
             
-            checkMarks = item.checkMarks
-            date = item.date
-            isOn = item.isOn
-            title = item.title
-            uuid = item.uuid
+            self.checkMarks = item.checkMarks
+            self.date = item.date
+            self.isOn = item.isOn
+            self.title = item.title
+            self.uuid = item.uuid
             
         }
+        
+    }
+    
+    func tapAlarmCell(item: HourAndMinute) {
+        
+        //index is for setting InputView.
+        self.indexOfUUID = item.uuid
+        
+        self.type = .edit
+        self.setUpInputView()
+        self.sheetIsPresented = true
+        
+    }
+    
+    func tapDeleteButton() {
+        
+        self.deleteAlertIsPresented = true
+        
+    }
+    
+    func tapMenuButton() {
+        
+        self.title = title
         
     }
     
@@ -156,13 +188,13 @@ final class AlarmViewModel: ObservableObject {
         
         if(items.count > 16) {
             
-            limitAlertIsPresented = true
+            self.limitAlertIsPresented = true
             
         } else {
             
-            type = .add
-            setUpInputView()
-            sheetIsPresented = true
+            self.type = .add
+            self.setUpInputView()
+            self.sheetIsPresented = true
             
         }
         
