@@ -177,6 +177,26 @@ final class AlarmViewModel: ObservableObject {
         
     }
     
+    func tapMarkCell(index: Int) {
+        
+        //decide ringing sound or not here.
+        self.checkMarks[index].bool.toggle()
+        
+        let trueCount = self.checkMarks.filter {$0.bool}
+            .count
+        
+        //this alert is called when there are no icons.
+        if (trueCount == 0) {
+            
+            self.zeroTrueAlertIsPresented = true
+            
+            //the number of icons cant remain at 0, so display the icons again here.
+            self.checkMarks[index].bool.toggle()
+            
+        }
+        
+    }
+    
     func tapMenuButton() {
         
         self.title = title

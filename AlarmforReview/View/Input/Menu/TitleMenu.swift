@@ -39,7 +39,6 @@ struct TitleMenu: View {
             
             Text(Constant.title)
             
-            Spacer()
             
         }
         .foregroundStyle(.foreground)

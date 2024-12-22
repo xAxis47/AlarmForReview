@@ -26,21 +26,7 @@ struct MarkCell: View {
         
         Button(action: {
             
-            //decide ringing sound or not here.
-            self.vm.checkMarks[index].bool.toggle()
-            
-            let trueCount = self.vm.checkMarks.filter {$0.bool}
-                .count
-            
-            //this alert is called when there are no icons.
-            if (trueCount == 0) {
-                
-                self.vm.zeroTrueAlertIsPresented = true
-                
-                //the number of icons cant remain at 0, so display the icons again here.
-                self.vm.checkMarks[index].bool.toggle()
-                
-            }
+            self.vm.tapMarkCell(index: self.index)
             
         }) {
             
