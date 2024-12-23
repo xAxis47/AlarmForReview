@@ -20,7 +20,10 @@ struct Constant {
     static let deleteAlertTitle: String = "このアラームを消しますか？"
     static let everyday: String = "毎日"
     static let goodMorning: String = "起床"
+    static let initialBool: Bool = true
     static let initialDate: Date = Date(timeIntervalSince1970: 0)
+    static let initialTitle: String = ""
+    static let initialUUID: UUID = UUID()
     static let isOn: String = "アラームをかける"
     static let japaneseIdentifier: String = "ja_JP"
     static let letsStart: String = "始ましょう"

@@ -486,6 +486,52 @@ class AlarmModel: ObservableObject {
         //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "Constant.other".
         if(type == .add && overlap == 0 && item.title == Constant.blank) {
             
+            blankTitleNewItem()
+            
+            //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "self.title".
+        } else if(type == .add && overlap == 0 && item.title != Constant.blank) {
+
+            otherTitleNewItem()
+            
+        //when ".add", and if overlap items, that conflict SwiftData.
+        } else if(type == .add && overlap != 0) {
+
+            conflictAlert()
+            
+        //if variables of "HourAndMinute" dont change anything, simply dismiss.
+        } else if(type == .edit && updateItem.checkMarks == item.checkMarks && updateItem.date == item.date && updateItem.title == item.title) {
+            
+            noChangeEditItem()
+            
+        //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" was changed and "title" was inserted blank necessarily. item's title is inserted "Constant.other".
+        } else if(type == .edit && overlap == 0 && item.title == Constant.blank) {
+            
+            blankEditItem()
+            
+            //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" or "title" was changed necessarily. item's title is inserted "self.title".
+        } else if(type == .edit && overlap == 0 && item.title != Constant.blank) {
+            
+            editTitle()
+            
+        //when ".edit", and overlap items, dont change "date", "title" is inserted blank, need to save item. in this case, changed "checkMarks" and "title".
+        } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title == Constant.blank) {
+            
+            overlapEditItem()
+            
+            //when ".edit", and overlap items, dont change "date", "title" isnt inserted blank, need to save item. in this case, changed "checkMarks" or "title".
+        } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title != Constant.blank) {
+            
+            overlapAndNoBlank()
+            
+        //other case is conflict SwiftData. call conflictAlert.
+        } else {
+            
+            conflictAlert()
+            
+        }
+        
+        func blankTitleNewItem() {
+            
             print("0")
             
             let newItem = HourAndMinute(
@@ -500,9 +546,10 @@ class AlarmModel: ObservableObject {
            
             dismiss()
          
-            //when ".add", dont overlap items and title is blank, can insert new item of "HourAndMinute". then new item's title is "self.title".
-        } else if(type == .add && overlap == 0 && item.title != Constant.blank) {
-
+        }
+        
+        func otherTitleNewItem() {
+            
             print("1")
             
             let newItem = HourAndMinute(
@@ -517,22 +564,25 @@ class AlarmModel: ObservableObject {
            
             dismiss()
            
-        //when ".add", and if overlap items, that conflict SwiftData.
-        } else if(type == .add && overlap != 0) {
-
+        }
+        
+        func conflictAlert() {
+            
             print("2")
             
             conflictAlertIsPresented = true
            
-        //if variables of "HourAndMinute" dont change anything, simply dismiss.
-        } else if(type == .edit && updateItem.checkMarks == item.checkMarks && updateItem.date == item.date && updateItem.title == item.title) {
+        }
+        
+        func noChangeEditItem() {
             
             print("3")
 
             dismiss()
 
-        //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" was changed and "title" was inserted blank necessarily. item's title is inserted "Constant.other".
-        } else if(type == .edit && overlap == 0 && item.title == Constant.blank) {
+        }
+        
+        func blankEditItem() {
             
             print("4")
 
@@ -553,8 +603,9 @@ class AlarmModel: ObservableObject {
            
             dismiss()
             
-            //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" or "title" was changed necessarily. item's title is inserted "self.title".
-        } else if(type == .edit && overlap == 0 && item.title != Constant.blank) {
+        }
+        
+        func editTitle() {
             
             print("5")
 
@@ -575,8 +626,9 @@ class AlarmModel: ObservableObject {
            
             dismiss()
          
-        //when ".edit", and overlap items, dont change "date", "title" is inserted blank, need to save item. in this case, changed "checkMarks" and "title".
-        } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title == Constant.blank) {
+        }
+        
+        func overlapEditItem() {
             
             print("6")
             
@@ -596,9 +648,10 @@ class AlarmModel: ObservableObject {
             }
            
             dismiss()
-         
-        //when ".edit", and overlap items, dont change "date", "title" isnt inserted blank, need to save item. in this case, changed "checkMarks" or "title".
-        } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title != Constant.blank) {
+
+        }
+        
+        func overlapAndNoBlank() {
             
             print("7")
             
@@ -618,15 +671,8 @@ class AlarmModel: ObservableObject {
             }
            
             dismiss()
-           
-        //other case is conflict SwiftData. call conflictAlert.
-        } else {
             
-            print("8")
-            
-             conflictAlertIsPresented = true
-            
-        }
+           }
         
     }
     

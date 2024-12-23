@@ -138,9 +138,9 @@ final class AlarmViewModel: ObservableObject {
             
             self.checkMarks = Constant.trueArray
             self.date = Constant.initialDate
-            self.isOn = true
-            self.title = ""
-            self.uuid = UUID()
+            self.isOn = Constant.initialBool
+            self.title = Constant.initialTitle
+            self.uuid = Constant.initialUUID
             
             self.indexOfUUID = uuid
             
