@@ -182,7 +182,13 @@ class AlarmModel: ObservableObject {
                 
                 let context = self.sharedModelContainer.mainContext
                 
+                print("\(items[index].date)")
+                
                 context.delete(items[index])
+                
+                fetchItems().forEach { print($0.date) }
+                
+                print("delete item")
                 
             }
             
@@ -269,7 +275,8 @@ class AlarmModel: ObservableObject {
     //write string of the days of the week or "everyday".
     func pickUpDaysString(checkMarks: [CheckMark]) -> String {
         
-        let trueCount = checkMarks.filter { $0.bool }
+        let trueCount = checkMarks
+            .filter { $0.bool }
 
         if(trueCount.count == 7) {
             
@@ -511,7 +518,7 @@ class AlarmModel: ObservableObject {
             //when ".edit", and dont overlap items, need to save item. because in this case, "checkMarks" or "date" or "title" was changed necessarily. item's title is inserted "self.title".
         } else if(type == .edit && overlap == 0 && item.title != Constant.blank) {
             
-            editTitle()
+            editTitleItem()
             
         //when ".edit", and overlap items, dont change "date", "title" is inserted blank, need to save item. in this case, changed "checkMarks" and "title".
         } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title == Constant.blank) {
@@ -521,7 +528,7 @@ class AlarmModel: ObservableObject {
             //when ".edit", and overlap items, dont change "date", "title" isnt inserted blank, need to save item. in this case, changed "checkMarks" or "title".
         } else if(type == .edit && overlap != 0 && updateItem.date == item.date && item.title != Constant.blank) {
             
-            overlapAndNoBlank()
+            overlapAndNoBlankItem()
             
         //other case is conflict SwiftData. call conflictAlert.
         } else {
@@ -605,7 +612,7 @@ class AlarmModel: ObservableObject {
             
         }
         
-        func editTitle() {
+        func editTitleItem() {
             
             print("5")
 
@@ -651,7 +658,7 @@ class AlarmModel: ObservableObject {
 
         }
         
-        func overlapAndNoBlank() {
+        func overlapAndNoBlankItem() {
             
             print("7")
             

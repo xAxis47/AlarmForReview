@@ -58,11 +58,6 @@ struct AlarmCell: View {
                    }
                    
                }
-               .if(isOn == false) { view in
-                   
-                   view.foregroundStyle(.gray)
-                   
-               }
                
             }
             .padding(6)
