@@ -22,7 +22,7 @@ class AlarmModel: ObservableObject {
     //notificationDelegate is from UNUserNotificationCenterDelegate. userNotifcation include "willPresentnotification" and "didReceiveresponse". "willPresentnotification" is set [.list, .banner, .badge, .sound].
     let notificationDelegate = ForegroundNotificationDelegate()
     
-    var sharedModelContainer: ModelContainer = {
+    let sharedModelContainer: ModelContainer = {
         
         let schema = Schema([
             HourAndMinute.self
@@ -42,7 +42,11 @@ class AlarmModel: ObservableObject {
         
     }()
     
+    let context: ModelContext
+    
     init() {
+        
+        self.context = self.sharedModelContainer.mainContext
         
         //this is request permission. if permitted, notificationDelegate assign self.center.delegate.
         self.center.requestAuthorization(
@@ -108,9 +112,7 @@ class AlarmModel: ObservableObject {
         
         do {
             
-            let context = self.sharedModelContainer.mainContext
-            
-            try context.save()
+            try self.context.save()
             
         } catch {
             
@@ -165,9 +167,7 @@ class AlarmModel: ObservableObject {
     //delete item on ViewModel. after that, for deleted item, register notifications again. this function is called at AlertButtons in InputView.
     func deleteItem(item: HourAndMinute) {
         
-        let context = self.sharedModelContainer.mainContext
-        
-        context.delete(item)
+        self.context.delete(item)
         
     }
     
@@ -180,11 +180,9 @@ class AlarmModel: ObservableObject {
             
             for index in offsets {
                 
-                let context = self.sharedModelContainer.mainContext
-                
                 print("\(items[index].date)")
                 
-                context.delete(items[index])
+                self.context.delete(items[index])
                 
                 fetchItems().forEach { print($0.date) }
                 
@@ -207,8 +205,6 @@ class AlarmModel: ObservableObject {
     
     func fetchItem(uuid: UUID) -> HourAndMinute {
         
-        let context = self.sharedModelContainer.mainContext
-        
         do {
             
             let descriptor = FetchDescriptor<HourAndMinute>(
@@ -216,7 +212,7 @@ class AlarmModel: ObservableObject {
                 sortBy: [SortDescriptor(\.date, order: .forward)]
             )
             
-            let items = try context.fetch(descriptor)
+            let items = try self.context.fetch(descriptor)
             
             return items.first ?? HourAndMinute()
             
@@ -231,15 +227,13 @@ class AlarmModel: ObservableObject {
     //bring all of HourAndMinute sorted by Date and asending.
     func fetchItems() -> [HourAndMinute] {
         
-        let context = self.sharedModelContainer.mainContext
-        
         do {
             
             let descriptor = FetchDescriptor<HourAndMinute>(
                 sortBy: [SortDescriptor(\.date, order: .forward)]
             )
             
-            let items = try context.fetch(descriptor)
+            let items = try self.context.fetch(descriptor)
             
             return items
             
@@ -477,8 +471,6 @@ class AlarmModel: ObservableObject {
     //save editing item on InputView or creating new, or is called conflictAlert. "overlap" means items' dates' overlap. when overlap, cant save item. then call conflictAlert.
     func saveItemOrCallAlert(conflictAlertIsPresented: inout Bool, dismiss: DismissAction, indexUUID: UUID, item: HourAndMinute, type: EditorialType) {
         
-        let context = self.sharedModelContainer.mainContext
-        
         let items = self.fetchItems()
         
        //when dates of items overlap, "overlap" not 0
@@ -549,7 +541,7 @@ class AlarmModel: ObservableObject {
                 uuid: item.uuid
             )
            
-            context.insert(newItem)
+            self.context.insert(newItem)
            
             dismiss()
          
@@ -567,7 +559,7 @@ class AlarmModel: ObservableObject {
                 uuid: item.uuid
             )
            
-            context.insert(newItem)
+            self.context.insert(newItem)
            
             dismiss()
            
@@ -600,7 +592,7 @@ class AlarmModel: ObservableObject {
            
             do {
                
-                try context.save()
+                try self.context.save()
                
             } catch {
                
@@ -623,7 +615,7 @@ class AlarmModel: ObservableObject {
            
             do {
                
-                try context.save()
+                try self.context.save()
                
             } catch {
                
@@ -646,7 +638,7 @@ class AlarmModel: ObservableObject {
            
             do {
                
-                try context.save()
+                try self.context.save()
                
             } catch {
                
@@ -669,7 +661,7 @@ class AlarmModel: ObservableObject {
            
             do {
                
-                try context.save()
+                try self.context.save()
                
             } catch {
                
@@ -699,7 +691,7 @@ class AlarmModel: ObservableObject {
             
         } catch {
             
-            fatalError("\(error)")
+            print("error")
             
         }
         

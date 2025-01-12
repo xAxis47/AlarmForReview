@@ -81,7 +81,7 @@ struct AlarmCell: View {
     let container = try! ModelContainer(for: HourAndMinute.self, configurations: config)
 
     return AlarmCell(item: HourAndMinute())
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
         .modelContainer(container)
     
 }
