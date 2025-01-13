@@ -34,6 +34,6 @@ struct TitleCell: View {
 #Preview {
     
     return TitleCell()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

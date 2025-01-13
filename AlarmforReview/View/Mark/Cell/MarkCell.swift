@@ -36,12 +36,8 @@ struct MarkCell: View {
                 
                 Spacer()
                 
-                if(self.vm.checkMarks[index].bool == true) {
-                    
-                    Image(systemName: "alarm")
-                        .foregroundStyle(.orange)
-                    
-                }
+                Image(systemName: vm.imageNames[index])
+                    .foregroundStyle(.orange)
                 
             }
             .padding()
@@ -57,6 +53,6 @@ struct MarkCell: View {
 #Preview {
     
     MarkCell(day: "月曜日", index: 1)
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

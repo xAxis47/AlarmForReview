@@ -39,6 +39,6 @@ struct StopButton: View {
 #Preview {
     
     return StopButton()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

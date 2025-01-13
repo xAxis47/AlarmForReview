@@ -74,6 +74,6 @@ struct AlarmView: View {
 #Preview {
     
     return AlarmView()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

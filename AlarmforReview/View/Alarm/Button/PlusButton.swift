@@ -35,6 +35,6 @@ struct PlusButton: View {
 #Preview {
     
     return PlusButton()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

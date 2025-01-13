@@ -29,6 +29,6 @@ struct MarkList: View {
 #Preview {
     
     MarkList()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

@@ -43,6 +43,6 @@ struct AlarmList: View {
 #Preview {
     
     return AlarmList()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

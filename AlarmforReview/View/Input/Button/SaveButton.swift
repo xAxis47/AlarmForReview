@@ -37,7 +37,7 @@ struct SaveButton: View {
 #Preview {
     
     return SaveButton()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }
 

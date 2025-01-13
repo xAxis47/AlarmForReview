@@ -42,6 +42,6 @@ struct AlertButtons: View {
 #Preview {
     
     AlertButtons()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

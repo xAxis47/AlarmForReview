@@ -25,6 +25,7 @@ final class AlarmViewModel: ObservableObject {
     let sharedModelContainer: ModelContainer
     
     var checkMarks: [CheckMark] = Constant.trueArray
+    var imageNames: [String] = Constant.imageNames
     var date: Date = Constant.initialDate
     var isOn: Bool = true
     var title: String = ""
@@ -181,6 +182,16 @@ final class AlarmViewModel: ObservableObject {
         
         //decide ringing sound or not here.
         self.checkMarks[index].bool.toggle()
+        
+        if (self.imageNames[index] == "") {
+            
+            self.imageNames[index] = "alarm"
+            
+        } else {
+            
+            self.imageNames[index] = ""
+            
+        }
         
         let trueCount = self.checkMarks.filter {$0.bool}
             .count

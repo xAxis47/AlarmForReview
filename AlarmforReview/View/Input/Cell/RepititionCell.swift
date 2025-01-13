@@ -41,6 +41,6 @@ struct RepititionCell: View {
 #Preview {
     
     return RepititionCell()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

@@ -71,6 +71,6 @@ struct InputView: View {
 #Preview {
     
     return InputView()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
 
 }

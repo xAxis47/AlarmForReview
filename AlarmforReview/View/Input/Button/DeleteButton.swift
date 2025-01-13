@@ -40,6 +40,6 @@ struct DeleteButton: View {
 #Preview {
     
     return DeleteButton()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

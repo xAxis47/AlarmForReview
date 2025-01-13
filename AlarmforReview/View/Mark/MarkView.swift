@@ -31,6 +31,6 @@ struct MarkView: View {
 #Preview {
     
     MarkView()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

@@ -37,6 +37,6 @@ struct DatePickerCell: View {
 #Preview {
     
     return DatePickerCell()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

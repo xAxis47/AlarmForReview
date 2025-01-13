@@ -29,6 +29,6 @@ struct InputList: View {
 #Preview {
     
     InputList()
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }

@@ -40,6 +40,6 @@ struct MenuButton: View {
 #Preview {
     
     return MenuButton(title: Constant.title)
-        .environmentObject(AViewModel())
+        .environmentObject(AlarmViewModel())
     
 }
